@@ -9,6 +9,23 @@ The goals of this project are as follows:
 - find thresholds that partition movement data into 'significant' and 'non-significant' (using machine learning techniques or otherwise)
 - use this 'filtered' data to find anomalies in time-series acceleration and gyration data (i.e. if the user has lower acceleration / gyration *on average* then one should trigger an alarm) using machine learning methods or otherwise
 
+A vote was taken on what movements were 'significant' and which were non-significant. The results are shown below:
+
+**Significant data:**
+- standing up and sitting down straight after
+- fetching remote control that is not at an arm's reach
+- lifting and lowering one's lower leg to stimulate blood circulation
+- walking
+- falling
+
+**Non-significant data:**
+- crossing one's arms
+- crossing one's legs
+- switching seating positions
+- moving from a sitting position to a lying one
+
+Note that the above were used as 'testing criteria' for the clustering model developed.
+
 # Contents of repository:
 
 **Data:** folder containing all the data used for either research, flow detection project or the movement data project
