@@ -36,7 +36,19 @@ Note that the above were used as 'testing criteria' for the clustering model dev
 
 **Movement Clustering movement data:** This folder The first stage of the project involved actually clustering this data to separate 'significant' movements from stationary datapoints. The first couple of notebooks are exploratory, then there is modelling, verification and finally finding numerical thresholds to be incorporated on the arduino itself (so that there is no constant data transfer).
 
-**Anomaly Detection in significant movements:** This folder is currently empty
+**Anomaly Detection in significant movements:** The folder includes notebooks on finding anomalies in timeseries data (the next step from clustering movement data). The first couple of notebooks are exploratory, but there is modelling too. The most successful model is using a moving average. Other methods considered have not been as insightful.
 
+Here are some important considerations:
+1. Abnormal data is needed for testing purposes
+2. There may be virtue in cutting out acceleration data points > 0.7 as they *seem* anomalous. However, there is no need to be hasty and rush to this, as a bit more analysis (looking into second dataset, as well as how gyration impacts this) is important
+3. The data collection has not provided us with the insight that we needed to *understand* the movements (may be an error with the way data is being collected on the Arduino, but there is little evidence to support this claim)
+4. Important aspects and methods should be documented, perhaps on a .py file
+5. Next tasks:
+  1. Document work
+  2. sketch graphs for gyration too, as well as second data set
+  3. Sketch the graphs showing the gaps in data too (i.e. when the person sleeps)
+  4. There is no machine learning in this at the moment? How can you implement machine learning to learn from the sleep times?
+  5. Is it worth filtering data further using SD? (note that data is currently right skewed!)
+  6. At the end, this must work with the API; be mindful of this when modifying and ensure that you cover the pointers under AD_4
 
 **Flow Detection:** not part of the problem description from above. Brief: you have access to simulation data that shows water flow inside a dwelling as a function of time. Can you determine anomalies in this data? (underflow, leak or open tap). Much of my work here is exploratory as I was in fact providing insight into another team member's problems.
