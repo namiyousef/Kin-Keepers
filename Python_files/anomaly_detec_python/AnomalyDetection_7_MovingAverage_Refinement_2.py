@@ -1,15 +1,74 @@
-"""
+#!/usr/bin/env python
+# coding: utf-8
 
-Author: Yousef Nami
-Version control:
-    v.0.0.0.    created file
-    v.0.1.0.    modified class such that average now calculated each time there is a time window change
+# # AnomalyDetection_7_MovingAverage_Refinement_2
+# 
+# **Updates from previous notebook:** 
+# - this notebook will refine the moving_avg() class
+#    
 
-"""
+# ## Libraries and Configuration
 
-# Dependencies:
+# In[1]:
 
-# class 'moving_avg'
+
+""" Libraries """
+
+#file / system libraries 
+import os
+import datetime as dt
+
+# mathematical 
+
+from numpy.fft import ifft
+from numpy.fft import fft
+import numpy as np
+
+# data exploration
+
+import pandas as pd
+
+# data visualization
+
+import matplotlib.pyplot as plt
+
+""" Configuration """
+
+# pandas 
+
+pd.set_option('display.max_columns', None)
+
+
+# ## Data
+
+# In[2]:
+
+
+base = '/Users/yousefnami/KinKeepers/ProjectAI/Kin-Keepers/Data/{}'
+names = ['rohan','ignacio']
+end_labels = ['_filtered.csv']
+dfs = []
+
+for index,name in enumerate(names):
+    dfs.append(pd.read_csv(base.format(names[index]+end_labels[0]),index_col = 0))
+
+
+# In[3]:
+
+
+dfs[0] = dfs[0].sort_values(by="date")
+print(dfs[0].head())
+dfs[0].tail()
+
+
+# In[4]:
+
+
+dfs[1].head()
+
+
+# In[304]:
+
 
 import datetime as dt
 import numpy as np
@@ -237,3 +296,55 @@ class average(moving_avg):
         self.data[-1].append([
             point for point in self.datapoint
         ])
+
+
+# ## On read data
+
+# In[303]:
+
+
+import random
+
+m_avg_instance = moving_avg()
+for item in dfs[1][['gyrTotal','accTotal','date']].values.tolist():
+    avg_instance = average(item[0:2],item[2])
+
+    
+#m_avg_instance.average()
+m_avg_instance.plot(plot_original=True)
+
+
+# In[305]:
+
+
+m_avg_instance = moving_avg(weight = (1,0.75))
+for item in dfs[0][['gyrTotal','accTotal','date']].values.tolist():
+    avg_instance = average(item[0:2],item[2])
+#m_avg_instance.average()
+m_avg_instance.plot(plot_original=True)
+
+
+# # Conclusion
+# 
+# The average class works, at least in determining the correct average.
+# 
+# There are some changes you need to make in terms of the actual class though, these are summarised below:
+# 1. Currently, you cannot choose to plot the average, with the data points, or average on it's own
+#     - UPDATE (25.09.2020): there is now an option allowing you to do so
+# 2. Currently, the average is calculated at the end, as opposed to at every stage (this was done to save memory, but when the model is deployed, you will need to calculate it every time)
+#     - UPDATE (28.09.2020): this feature has been added, but the feature of taking an average at the end is currenlty not working
+# 3. You need to think about where everything will be stored, and how this will work in conjunction with Rohan's API (best wait for him to come back from holiday before starting this)
+#     - UPDATE (25.09.2020): As per Mr Jimenez, this not required right now
+# 4. You need to account for the weightage when calculating the averages
+#     - UPDATE (28.09.2020): Weightage functionality added
+# 5. You need to add meaningful xticks, in terms of date and time
+# 6. You need to add functionality to be able to determine when there is a 'break' in the sequence (i.e. value decreases by a a lot)
+# 7. You need to fix the way your class handles stuff in memory: it currently saves the values from previous instantiations as well
+# 8. Need to clean up the function, I get the impression that there is, a LOT of repetition!
+# 9. change the inner code so that DoF = len(labels)
+
+# In[ ]:
+
+
+
+
